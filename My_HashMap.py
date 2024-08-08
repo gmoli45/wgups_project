@@ -1,11 +1,12 @@
 # HashMap
 
 class HashMap:
-    def __init__(self, size=6):
+    def __init__(self, size=30):
         # constructor with optional size parameter
         # creates buckets each with value of None
         self.size = size
         self.map = [None] * self.size
+        self.num_items = 0
 
     def _get_hash(self, key):
         # Polynomial hashing
@@ -26,9 +27,14 @@ class HashMap:
         key_hash = self._get_hash(key)
         key_value = [key, value]
 
+        # check for resize condition
+        if self.num_items / self.size >= 1.5:
+            self._resize(2 * self.size)  # double the size
+
         # if nothing in bucket, insert key_value
         if self.map[key_hash] is None:
             self.map[key_hash] = list([key_value])
+            self.num_items += 1
             return True
         # if key already exists in bucket, update value
         else:
@@ -37,6 +43,7 @@ class HashMap:
                     pair[1] = value
                     return True
             self.map[key_hash].append(key_value)
+            self.num_items += 1
             return True
 
     def get(self, key):
@@ -56,7 +63,23 @@ class HashMap:
         for i in range(len(self.map[key_hash])):
             if self.map[key_hash][i][0] == key:
                 self.map[key_hash].pop(i)
+                self.num_items -= 1
                 return True
+
+    def _resize(self, new_size):
+        # create new map with new size
+        new_map = [None] * new_size
+        self.size = new_size
+
+        # re-hash all existing key_value pairs
+        for bucket in self.map:
+            if bucket is not None:
+                for key_value in bucket:
+                    new_hash = self._get_hash(key_value[0])  # re-hash the key
+                    if new_map[new_hash] is None:
+                        new_map[new_hash] = list([key_value])
+                    else:
+                        new_map[new_hash].append(key_value)
 
     def print(self):
         print("--- HashMap contents ---")

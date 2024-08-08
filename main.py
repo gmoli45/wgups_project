@@ -1,9 +1,11 @@
 import csv
+import math
 from My_HashMap import HashMap
 from Package import Package
 
+
 # create hashmap instance
-myHashMap = HashMap(size=30)
+myHashMap = HashMap()
 
 
 # read package file
@@ -24,7 +26,10 @@ def loadPackageData(fileName):
 
             # create package object
             p = Package(pID, pAddress, pCity, pState, pZip, pDeadline, pWeight, pNotes)
-            print(p)
 
             # load into hashmap
             myHashMap.add(pID, p)
+
+
+loadPackageData('WGUPS Package File.csv')
+
