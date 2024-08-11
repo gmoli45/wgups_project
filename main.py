@@ -2,7 +2,7 @@ import csv
 import math
 from My_HashMap import HashMap
 from Package import Package
-
+from Truck import Truck
 
 # create hashmap instance
 myHashMap = HashMap()
