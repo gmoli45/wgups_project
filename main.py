@@ -33,3 +33,11 @@ def loadPackageData(fileName):
 
 loadPackageData('WGUPS Package File.csv')
 
+def loadDistanceData(filename):
+    with open(filename) as distanceTable:
+        distance_data = csv.reader(distanceTable, delimiter=',')
+        data_read = [row for row in distance_data]
+
+    return data_read
+
+distances = loadDistanceData('WGUPS Address-Distance Table.csv')
