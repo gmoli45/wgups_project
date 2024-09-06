@@ -46,6 +46,23 @@ def loadDistanceData(filename):
 
 distances = loadDistanceData('WGUPS Address-Distance Table.csv')
 
+
+def find_distance_between(addr1, addr2):
+    ind1 = None
+    ind2 = None
+    for i in range(len(distances)):
+        if distances[i][0] == addr1:
+            ind1 = i
+        if distances[i][0] == addr2:
+            ind2 = i
+    if distances[ind1][ind2] == '':
+        return distances[ind2][ind1]
+    else:
+        return distances[ind1][ind2]
+
+
+print(find_distance_between('195 W Oakland Ave', '4580 S 2300 E'))
+
 # instantiate truck objects
 truck1 = Truck()
 truck2 = Truck()
@@ -54,4 +71,3 @@ truck3 = Truck()
 truck1.load([1, 13, 14, 15, 16, 19, 20, 29, 30, 31, 34, 37, 40], 'Driver A', '8:00', 'idk yet')
 truck2.load([2, 3, 4, 5, 6, 7, 8, 18, 25, 28, 32, 36, 38], 'Driver B', '9:05', 'idk yet')
 truck3.load([9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39], '', '', '')
-
