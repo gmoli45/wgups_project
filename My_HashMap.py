@@ -16,12 +16,6 @@ class HashMap:
             hash = (hash * base + ord(char)) % self.size
         return hash
 
-        ## old hashing function
-        # hash = 0
-        # for char in str(key):
-        #     hash += ord(char)
-        # return hash % self.size
-
     def add(self, key, value):
         # handles both inserting and updating
         key_hash = self._get_hash(key)
