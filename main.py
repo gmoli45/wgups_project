@@ -1,3 +1,7 @@
+# Gabriel Molina
+# ID 011555816
+# gmoli45@wgu.edu
+
 import csv
 import math
 from My_HashMap import HashMap
