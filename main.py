@@ -7,10 +7,10 @@ import math
 from My_HashMap import HashMap
 from Package import Package
 from Truck import Truck
-from datetime import datetime
+import datetime
 
 # create hashmap instance
-myHashMap = HashMap()
+packageHashMap = HashMap()
 
 
 # read package file
@@ -33,7 +33,7 @@ def loadPackageData(fileName):
             p = Package(pID, pAddress, pCity, pState, pZip, pDeadline, pWeight, pNotes)
 
             # load into hashmap
-            myHashMap.add(pID, p)
+            packageHashMap.add(pID, p)
 
 
 loadPackageData('WGUPS Package File.csv')
@@ -64,14 +64,29 @@ def find_distance_between(addr1, addr2):
     else:
         return distances[ind1][ind2]
 
+# example to be removed. find distance bt package 1 address and package 15 address
+print(find_distance_between(packageHashMap.get(1).address, packageHashMap.get(15).address))
 
-print(find_distance_between('195 W Oakland Ave', '4580 S 2300 E'))
 
 # instantiate truck objects
 truck1 = Truck()
 truck2 = Truck()
 truck3 = Truck()
 
-truck1.load([1, 13, 14, 15, 16, 19, 20, 29, 30, 31, 34, 37, 40], 'Driver A', '8:00', 'idk yet')
-truck2.load([2, 3, 4, 5, 6, 7, 8, 18, 25, 28, 32, 36, 38], 'Driver B', '9:05', 'idk yet')
-truck3.load([9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39], '', '', '')
+truck1.load([1, 13, 14, 15, 16, 19, 20, 29, 30, 31, 34, 37, 40], 'Driver A', datetime.timedelta(hours=8))
+truck2.load([2, 3, 4, 5, 6, 7, 8, 18, 25, 28, 32, 36, 38], 'Driver B', datetime.timedelta(hours=10, minutes=20))
+truck3.load([9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39], '', datetime.timedelta(hours=0, minutes=0))
+
+
+def deliver_packages(truck):
+    def find_next_stop():
+        next_stop = ''
+        next_stop_distance = 100000
+        for packageId in truck.packages:
+            distance = find_distance_between(truck.location, packageHashMap.get(packageId).address)
+            if distance < next_stop_distance:
+                next_stop_distance = distance
+                next_stop = packageHashMap.get(packageId).address
+
+
+deliver_packages(truck1)
