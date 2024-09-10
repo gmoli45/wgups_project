@@ -102,6 +102,5 @@ def deliver_packages(truck):
         travel_and_deliver(find_next_stop(), truck.next_package)
 
 
+deliver_packages(truck1)
 deliver_packages(truck2)
-
-print(truck1.mileage)
