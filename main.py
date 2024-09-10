@@ -65,7 +65,7 @@ def find_distance_between(addr1, addr2):
         return distances[ind1][ind2]
 
 # example to be removed. find distance bt package 1 address and package 15 address
-print(find_distance_between(packageHashMap.get(1).address, packageHashMap.get(15).address))
+# print(find_distance_between(packageHashMap.get(1).address, packageHashMap.get(15).address))
 
 
 # instantiate truck objects
@@ -102,4 +102,6 @@ def deliver_packages(truck):
         travel_and_deliver(find_next_stop(), truck.next_package)
 
 
-deliver_packages(truck1)
+deliver_packages(truck2)
+
+print(truck1.mileage)
