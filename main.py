@@ -2,6 +2,8 @@
 # ID 011555816
 # gmoli45@wgu.edu
 
+
+# import necessary libraries and classes
 import csv
 from My_HashMap import HashMap
 from Package import Package
@@ -12,7 +14,7 @@ import datetime
 packageHashMap = HashMap()
 
 
-# read package file
+# function to read package file
 def loadPackageData(fileName):
     with open(fileName) as packages:
         package_data = csv.reader(packages, delimiter=',')
@@ -35,10 +37,11 @@ def loadPackageData(fileName):
             packageHashMap.add(pID, p)
 
 
+# call function to read package file
 loadPackageData('WGUPS Package File.csv')
 
 
-# read distance table
+# function to read distance table
 def loadDistanceData(filename):
     with open(filename) as distanceTable:
         distance_data = csv.reader(distanceTable, delimiter=',')
@@ -47,9 +50,11 @@ def loadDistanceData(filename):
     return data_read
 
 
+# call function to read distance table
 distances = loadDistanceData('WGUPS Address-Distance Table.csv')
 
 
+# function to find distance between two addresses
 def find_distance_between(addr1, addr2):
     ind1 = None
     ind2 = None
@@ -59,7 +64,7 @@ def find_distance_between(addr1, addr2):
             ind1 = i
         if distances[i][0] == addr2:
             ind2 = i
-    # return distance between
+    # return distance between them
     if distances[ind1][ind2] == '':
         return distances[ind2][ind1]
     else:
@@ -186,10 +191,10 @@ class UserInterface:
                     print("\nInvalid input.\n")
             break
         elif report_type.upper() == "B":
-            print("\nTruck Summary:\n")
-            print(f"Truck 1 Mileage: {truck1.mileage}")
-            print(f"Truck 2 Mileage: {truck2.mileage}")
-            print(f"Truck 3 Mileage: {truck3.mileage}")
+            print("\nTruck Summary:")
+            print(f"\nTruck 1\n\tMileage: {truck1.mileage}\n\tDeparture time: {truck1.departure_time}\n\tReturn time: {truck1.time}")
+            print(f"\nTruck 2\n\tMileage: {truck2.mileage}\n\tDeparture time: {truck2.departure_time}\n\tReturn time: {truck2.time}")
+            print(f"\nTruck 3\n\tMileage: {truck3.mileage}\n\tDeparture time: {truck3.departure_time}\n\tReturn time: {truck3.time}")
             print(f"\nTotal mileage: {truck1.mileage + truck2.mileage + truck3.mileage}")
             break
         else:
