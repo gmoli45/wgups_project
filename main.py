@@ -96,7 +96,7 @@ def deliver_packages(truck):
         truck.location = next_package.address
         truck.packages_on_board.remove(next_package.id)
 
-        # !!! update package
+        # !!! update package (maybe)
 
     # loop through deliveries until no packages on board
     while len(truck.packages_on_board) > 0:
@@ -111,13 +111,14 @@ def deliver_packages(truck):
 deliver_packages(truck1)
 deliver_packages(truck2)
 
-print(truck1.time)
-print(truck2.time)
-
-print(truck3.time)
+# truck3 leaves when truck1 or truck2 returns to hub
 truck3.departure_time = min(truck1.time, truck2.time)
 truck3.time = truck3.departure_time
-print(truck3.time)
 deliver_packages(truck3)
 
-print(truck3.time)
+
+# user interface
+class UserInterface:
+    print("\nWelcome to the WGUPS package tracking service.\n\n-----------------------\n")
+    print("Please enter the time at which you would like to check package status (format hh:mm:ss):\n")
+    input_time = input("")
