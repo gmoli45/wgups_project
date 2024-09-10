@@ -73,9 +73,9 @@ truck1 = Truck()
 truck2 = Truck()
 truck3 = Truck()
 
-truck1.load([1, 13, 14, 15, 16, 19, 20, 29, 30, 31, 34, 37, 40], 'Driver A', datetime.timedelta(hours=8))
-truck2.load([2, 3, 4, 5, 6, 7, 8, 18, 25, 28, 32, 36, 38], 'Driver B', datetime.timedelta(hours=10, minutes=20))
-truck3.load([9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39], '', datetime.timedelta(hours=0, minutes=0))
+truck1.load([1, 13, 14, 15, 16, 19, 20, 29, 30, 31, 34, 37, 40], datetime.timedelta(hours=8))
+truck2.load([2, 3, 4, 5, 6, 7, 8, 18, 25, 28, 32, 36, 38], datetime.timedelta(hours=10, minutes=20))
+truck3.load([9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39], datetime.timedelta(hours=0, minutes=0))
 
 
 def deliver_packages(truck):
