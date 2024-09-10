@@ -123,53 +123,75 @@ deliver_packages(truck3)
 class UserInterface:
     import re
     print("\nWelcome to the WGUPS package tracking service.\n\n-----------------------\n")
-    print("Please enter the time at which you would like to check package status (format hh:mm:ss):\n")
+
+    print("Please enter \"A\" if you would like to track one or more packages."
+          "\nEnter \"B\" if you would like to view the Truck summary.")
 
     while True:
-        input_time = input("")
-        try:
-            # Validate the input using a regular expression
-            if re.match(r"^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$", input_time):
-                # Input is valid, break the loop
-                break
-            else:
-                print("\nInvalid input. Please enter a time in hh:mm:ss format.\n")
-        except ValueError:
-            print("\nInvalid input. Please enter a time in hh:mm:ss format.\n")
+        report_type = input()
+        if report_type.upper() == "A":
 
-    hours, minutes, seconds = input_time.split(":")
-    time_to_check = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+            print("\nPlease enter the time at which you would like to check package status (format hh:mm:ss):\n")
 
-    print("\nEnter the package ID you would like to track. If you would like to view all packages, enter \"all\".\n")
-    while True:
-        input_package = input("")
-        try:
-            if input_package.isnumeric():
-                if 1 <= int(input_package) <= 40:
-                    pkg = packageHashMap.get(int(input_package))
-
-                    if time_to_check >= pkg.deliveredTime:
-                        pkg.status = f"Delivered at {pkg.deliveredTime}"
-                    elif time_to_check >= pkg.departure_time:
-                        pkg.status = "En route"
+            while True:
+                input_time = input("")
+                try:
+                    # Validate the input using a regular expression
+                    if re.match(r"^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$", input_time):
+                        # Input is valid, break the loop
+                        break
                     else:
-                        pkg.status = "At hub"
-                    print(pkg)
-                    break
-                else:
-                    print("\nInvalid input. Please enter a valid package ID or enter \"all\" to view all packages.\n")
-            elif input_package == "all":
-                for i in range(1, 41):
-                    pkg = packageHashMap.get(i)
-                    if time_to_check >= pkg.deliveredTime:
-                        pkg.status = f"Delivered at {pkg.deliveredTime}"
-                    elif time_to_check >= pkg.departure_time:
-                        pkg.status = "En route"
+                        print("\nInvalid input. Please enter a time in hh:mm:ss format.\n")
+                except ValueError:
+                    print("\nInvalid input. Please enter a time in hh:mm:ss format.\n")
+
+            hours, minutes, seconds = input_time.split(":")
+            time_to_check = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+
+            print("\nEnter the package ID you would like to track. "
+                  "If you would like to view all packages, enter \"all\".\n")
+            while True:
+                input_package = input("")
+                try:
+                    if input_package.isnumeric():
+                        if 1 <= int(input_package) <= 40:
+                            pkg = packageHashMap.get(int(input_package))
+
+                            if time_to_check >= pkg.deliveredTime:
+                                pkg.status = f"Delivered at {pkg.deliveredTime}"
+                            elif time_to_check >= pkg.departure_time:
+                                pkg.status = "En route"
+                            else:
+                                pkg.status = "At hub"
+                            print(pkg)
+                            break
+                        else:
+                            print("\nInvalid input. Please enter a valid package ID "
+                                  "or enter \"all\" to view all packages.\n")
+                    elif input_package == "all":
+                        for i in range(1, 41):
+                            pkg = packageHashMap.get(i)
+                            if time_to_check >= pkg.deliveredTime:
+                                pkg.status = f"Delivered at {pkg.deliveredTime}"
+                            elif time_to_check >= pkg.departure_time:
+                                pkg.status = "En route"
+                            else:
+                                pkg.status = "At hub"
+                            print(pkg)
+                        break
                     else:
-                        pkg.status = "At hub"
-                    print(pkg)
-                break
-            else:
-                print("\nInvalid input. Please enter a valid package ID or enter \"all\" to view all packages.\n")
-        except ValueError:
-            print("\nInvalid input.\n")
+                        print("\nInvalid input. Please enter a valid package ID "
+                              "or enter \"all\" to view all packages.\n")
+                except ValueError:
+                    print("\nInvalid input.\n")
+            break
+        elif report_type.upper() == "B":
+            print("\nTruck Summary:\n")
+            print(f"Truck 1 Mileage: {truck1.mileage}")
+            print(f"Truck 2 Mileage: {truck2.mileage}")
+            print(f"Truck 3 Mileage: {truck3.mileage}")
+            print(f"\nTotal mileage: {truck1.mileage + truck2.mileage + truck3.mileage}")
+            break
+        else:
+            print("\nInvalid input. Please enter \"A\" if you would like to track one or more packages, or "
+                  "\nenter \"B\" if you would like to view the Truck summary.")
