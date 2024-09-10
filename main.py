@@ -142,23 +142,34 @@ class UserInterface:
 
     print("\nEnter the package ID you would like to track. If you would like to view all packages, enter \"all\".\n")
     while True:
-        input_package = input()
+        input_package = input("")
         try:
-            if 1 <= int(input_package) <= 40:
-                pkg = packageHashMap.get(int(input_package))
+            if input_package.isnumeric():
+                if 1 <= int(input_package) <= 40:
+                    pkg = packageHashMap.get(int(input_package))
 
-                if time_to_check >= pkg.deliveredTime:
-                    pkg.status = f"Delivered at {pkg.deliveredTime}"
-                elif time_to_check >= pkg.departure_time:
-                    pkg.status = "En route"
+                    if time_to_check >= pkg.deliveredTime:
+                        pkg.status = f"Delivered at {pkg.deliveredTime}"
+                    elif time_to_check >= pkg.departure_time:
+                        pkg.status = "En route"
+                    else:
+                        pkg.status = "At hub"
+                    print(pkg)
+                    break
                 else:
-                    pkg.status = "At hub"
-
-                print(pkg)
-                break
-            elif input_package.lower() == "all":
+                    print("\nInvalid input. Please enter a valid package ID or enter \"all\" to view all packages.\n")
+            elif input_package == "all":
+                for i in range(1, 41):
+                    pkg = packageHashMap.get(i)
+                    if time_to_check >= pkg.deliveredTime:
+                        pkg.status = f"Delivered at {pkg.deliveredTime}"
+                    elif time_to_check >= pkg.departure_time:
+                        pkg.status = "En route"
+                    else:
+                        pkg.status = "At hub"
+                    print(pkg)
                 break
             else:
                 print("\nInvalid input. Please enter a valid package ID or enter \"all\" to view all packages.\n")
         except ValueError:
-            print("\nInvalid input. Please enter a valid package ID or enter \"all\" to view all packages.\n")
+            print("\nInvalid input.\n")
