@@ -94,7 +94,7 @@ def deliver_packages(truck):
     def travel_and_deliver(next_stop_distance, next_package):
         # update truck
         truck.mileage += next_stop_distance
-        truck.time = truck.departure_time + datetime.timedelta(hours=next_stop_distance / truck.avg_speed)
+        truck.time += datetime.timedelta(hours=next_stop_distance / truck.avg_speed)
         truck.location = next_package.address
         truck.packages_on_board.remove(next_package.id)
 

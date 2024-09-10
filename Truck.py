@@ -15,6 +15,7 @@ class Truck:
     def load(self, packages, departure_time):
         self.packages_on_board = packages
         self.departure_time = departure_time
+        self.time = departure_time
 
     def deliver(self, package_id):
         self.packages_on_board.remove(package_id)
