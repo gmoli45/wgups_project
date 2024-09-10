@@ -79,14 +79,27 @@ truck3.load([9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39], '', datetim
 
 
 def deliver_packages(truck):
+
     def find_next_stop():
-        next_stop = ''
         next_stop_distance = 100000
-        for packageId in truck.packages:
+        for packageId in truck.packages_on_board:
             distance = find_distance_between(truck.location, packageHashMap.get(packageId).address)
-            if distance < next_stop_distance:
-                next_stop_distance = distance
-                next_stop = packageHashMap.get(packageId).address
+            if float(distance) < float(next_stop_distance):
+                next_stop_distance = float(distance)
+                truck.next_package = packageHashMap.get(packageId)
+        return next_stop_distance
+
+    def travel_and_deliver(next_stop_distance, next_package):
+        # update truck
+        truck.mileage += next_stop_distance
+        truck.time = truck.departure_time + datetime.timedelta(hours=next_stop_distance/truck.avg_speed)
+        truck.location = next_package.address
+        truck.packages_on_board.remove(next_package.id)
+
+        # update package status
+
+    while len(truck.packages_on_board) > 0:
+        travel_and_deliver(find_next_stop(), truck.next_package)
 
 
 deliver_packages(truck1)

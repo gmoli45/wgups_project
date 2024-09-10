@@ -8,7 +8,7 @@ class Package:
         self.deliveryDeadline = deliveryDeadline
         self.weight = weight
         self.notes = notes
-        self.status = 'N/A'
+        self.status = 'In Transit'
 
     def __str__(self):
         return f"\nID: {self.id}\nAddress: {self.address}\nCity: {self.city}\nState: {self.state}\nZip: {self.zip}\nDelivery Deadline: {self.deliveryDeadline}\nWeight: {self.weight}\nNotes: {self.notes}\nStatus: {self.status}"

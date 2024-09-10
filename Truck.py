@@ -3,10 +3,11 @@ class Truck:
         self.current_driver = None
         self.packages_on_board = []
         self.departure_time = None
+        self.time = None
         self.capacity = 16
         self.avg_speed = 18
         self.mileage = 0
-        self.next_stop = ''
+        self.next_package = None
         self.location = '4001 South 700 East'
 
     def __str__(self):
