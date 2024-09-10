@@ -90,8 +90,9 @@ def deliver_packages(truck):
         return next_stop_distance
 
     def travel_and_deliver(next_stop_distance, next_package):
-        # !!! update package delivery time
+        # update package
         truck.next_package.deliveredTime = truck.time
+        truck.next_package.departure_time = truck.departure_time
 
         # update truck
         truck.mileage += next_stop_distance
@@ -148,6 +149,10 @@ class UserInterface:
 
                 if time_to_check >= pkg.deliveredTime:
                     pkg.status = f"Delivered at {pkg.deliveredTime}"
+                elif time_to_check >= pkg.departure_time:
+                    pkg.status = "En route"
+                else:
+                    pkg.status = "At hub"
 
                 print(pkg)
                 break
