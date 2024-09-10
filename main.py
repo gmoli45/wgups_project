@@ -115,6 +115,7 @@ def deliver_packages(truck):
     truck.time += datetime.timedelta(hours=dist_back_to_hub / truck.avg_speed)
 
 
+# dispatch trucks 1 and 2 first
 deliver_packages(truck1)
 deliver_packages(truck2)
 
@@ -124,18 +125,21 @@ truck3.time = truck3.departure_time
 deliver_packages(truck3)
 
 
-# user interface
+# user interface to check packages or view truck summary
 class UserInterface:
     import re
+
     print("\nWelcome to the WGUPS package tracking service.\n\n-----------------------\n")
 
+    # prompt user for options
     print("Please enter \"A\" if you would like to track one or more packages."
           "\nEnter \"B\" if you would like to view the Truck summary.")
 
+    # while loop used with if-statements and try-except to catch invalid inputs
     while True:
         report_type = input()
         if report_type.upper() == "A":
-
+            # prompt user to input time
             print("\nPlease enter the time at which you would like to check package status (format hh:mm:ss):\n")
 
             while True:
@@ -150,14 +154,17 @@ class UserInterface:
                 except ValueError:
                     print("\nInvalid input. Please enter a time in hh:mm:ss format.\n")
 
+            # split user input on colon and convert to datetime object
             hours, minutes, seconds = input_time.split(":")
             time_to_check = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
 
+            # prompt user for package ID or "all" to view all packages
             print("\nEnter the package ID you would like to track. "
                   "If you would like to view all packages, enter \"all\".\n")
             while True:
                 input_package = input("")
                 try:
+                    # validate input
                     if input_package.isnumeric():
                         if 1 <= int(input_package) <= 40:
                             pkg = packageHashMap.get(int(input_package))
@@ -190,6 +197,7 @@ class UserInterface:
                 except ValueError:
                     print("\nInvalid input.\n")
             break
+        # print truck summary report
         elif report_type.upper() == "B":
             print("\nTruck Summary:")
             print(f"\nTruck 1\n\tMileage: {truck1.mileage}\n\tDeparture time: {truck1.departure_time}\n\tReturn time: {truck1.time}")

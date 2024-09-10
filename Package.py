@@ -13,4 +13,12 @@ class Package:
         self.deliveredTime = None
 
     def __str__(self):
-        return f"\nID: {self.id}\nAddress: {self.address}\nCity: {self.city}\nState: {self.state}\nZip: {self.zip}\nDelivery Deadline: {self.deliveryDeadline}\nWeight: {self.weight}\nNotes: {self.notes}\nStatus: {self.status}"
+        return (f"\nID: {self.id}"
+                f"\nAddress: {self.address}"
+                f"\nCity: {self.city}"
+                f"\nState: {self.state}"
+                f"\nZip: {self.zip}"
+                f"\nDelivery Deadline: {self.deliveryDeadline}"
+                f"\nWeight: {self.weight}"
+                f"\nNotes: {self.notes}"
+                f"\nStatus: {self.status}")
