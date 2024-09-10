@@ -90,13 +90,14 @@ def deliver_packages(truck):
         return next_stop_distance
 
     def travel_and_deliver(next_stop_distance, next_package):
+        # !!! update package delivery time
+        truck.next_package.deliveredTime = truck.time
+
         # update truck
         truck.mileage += next_stop_distance
         truck.time += datetime.timedelta(hours=next_stop_distance / truck.avg_speed)
         truck.location = next_package.address
         truck.packages_on_board.remove(next_package.id)
-
-        # !!! update package (maybe)
 
     # loop through deliveries until no packages on board
     while len(truck.packages_on_board) > 0:
@@ -140,9 +141,15 @@ class UserInterface:
 
     print("\nEnter the package ID you would like to track. If you would like to view all packages, enter \"all\".\n")
     while True:
-        input_package = input("")
+        input_package = input()
         try:
             if 1 <= int(input_package) <= 40:
+                pkg = packageHashMap.get(int(input_package))
+
+                if time_to_check >= pkg.deliveredTime:
+                    pkg.status = f"Delivered at {pkg.deliveredTime}"
+
+                print(pkg)
                 break
             elif input_package.lower() == "all":
                 break
