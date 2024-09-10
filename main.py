@@ -119,6 +119,34 @@ deliver_packages(truck3)
 
 # user interface
 class UserInterface:
+    import re
     print("\nWelcome to the WGUPS package tracking service.\n\n-----------------------\n")
     print("Please enter the time at which you would like to check package status (format hh:mm:ss):\n")
-    input_time = input("")
+
+    while True:
+        input_time = input("")
+        try:
+            # Validate the input using a regular expression
+            if re.match(r"^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$", input_time):
+                # Input is valid, break the loop
+                break
+            else:
+                print("\nInvalid input. Please enter a time in hh:mm:ss format.\n")
+        except ValueError:
+            print("\nInvalid input. Please enter a time in hh:mm:ss format.\n")
+
+    hours, minutes, seconds = input_time.split(":")
+    time_to_check = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+
+    print("\nEnter the package ID you would like to track. If you would like to view all packages, enter \"all\".\n")
+    while True:
+        input_package = input("")
+        try:
+            if 1 <= int(input_package) <= 40:
+                break
+            elif input_package.lower() == "all":
+                break
+            else:
+                print("\nInvalid input. Please enter a valid package ID or enter \"all\" to view all packages.\n")
+        except ValueError:
+            print("\nInvalid input. Please enter a valid package ID or enter \"all\" to view all packages.\n")
