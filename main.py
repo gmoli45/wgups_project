@@ -3,13 +3,12 @@
 # gmoli45@wgu.edu
 
 import csv
-import math
 from My_HashMap import HashMap
 from Package import Package
 from Truck import Truck
 import datetime
 
-# create hashmap instance
+# create hashmap instance to store packages
 packageHashMap = HashMap()
 
 
@@ -54,19 +53,17 @@ distances = loadDistanceData('WGUPS Address-Distance Table.csv')
 def find_distance_between(addr1, addr2):
     ind1 = None
     ind2 = None
+    # find index of each address in distances data
     for i in range(len(distances)):
         if distances[i][0] == addr1:
             ind1 = i
         if distances[i][0] == addr2:
             ind2 = i
+    # return distance between
     if distances[ind1][ind2] == '':
         return distances[ind2][ind1]
     else:
         return distances[ind1][ind2]
-
-
-# example to be removed. find distance bt package 1 address and package 15 address
-# print(find_distance_between(packageHashMap.get(1).address, packageHashMap.get(15).address))
 
 
 # instantiate truck objects
@@ -78,10 +75,11 @@ truck3 = Truck()
 truck1.load([1, 13, 14, 15, 16, 19, 20, 29, 30, 31, 34, 37, 40], datetime.timedelta(hours=8))
 truck2.load([2, 3, 4, 5, 6, 7, 8, 18, 25, 28, 32, 36, 38], datetime.timedelta(hours=10, minutes=20))
 truck3.load([9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39],
-            datetime.timedelta(hours=0, minutes=0))  # placeholder departure time
+            None)  # departure time to be updated when truck1 or truck2 returns
 
 
 def deliver_packages(truck):
+    # find closest next address from packages on truck
     def find_next_stop():
         next_stop_distance = 100000
         for packageId in truck.packages_on_board:
@@ -98,10 +96,16 @@ def deliver_packages(truck):
         truck.location = next_package.address
         truck.packages_on_board.remove(next_package.id)
 
-        # update package status
+        # !!! update package
 
+    # loop through deliveries until no packages on board
     while len(truck.packages_on_board) > 0:
         travel_and_deliver(find_next_stop(), truck.next_package)
+
+    # return truck to hub
+    dist_back_to_hub = float(find_distance_between(truck.location, "4001 S 700 E"))
+    truck.mileage += dist_back_to_hub
+    truck.time += datetime.timedelta(hours=dist_back_to_hub / truck.avg_speed)
 
 
 deliver_packages(truck1)
