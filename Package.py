@@ -11,14 +11,13 @@ class Package:
         self.departure_time = None
         self.status = 'At hub'
         self.deliveredTime = None
+        self.assigned_truck = None
 
     def __str__(self):
         return (f"\nID: {self.id}"
-                f"\nAddress: {self.address}"
-                f"\nCity: {self.city}"
-                f"\nState: {self.state}"
-                f"\nZip: {self.zip}"
+                f"\nAddress: {self.address}, {self.city}, {self.state} {self.zip}"
                 f"\nDelivery Deadline: {self.deliveryDeadline}"
                 f"\nWeight: {self.weight}"
                 f"\nNotes: {self.notes}"
-                f"\nStatus: {self.status}")
+                f"\nStatus: {self.status}"
+                f"\nAssigned Truck: {self.assigned_truck}")

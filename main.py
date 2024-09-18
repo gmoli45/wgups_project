@@ -76,11 +76,27 @@ truck1 = Truck()
 truck2 = Truck()
 truck3 = Truck()
 
-# load trucks
+# load truck 1
 truck1.load([1, 13, 14, 15, 16, 19, 20, 29, 30, 31, 34, 37, 40], datetime.timedelta(hours=8))
-truck2.load([2, 3, 4, 5, 6, 7, 8, 18, 25, 28, 32, 36, 38], datetime.timedelta(hours=10, minutes=20))
-truck3.load([9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39],
-            None)  # departure time to be updated when truck1 or truck2 returns
+for i in truck1.packages_on_board:
+    pkg = packageHashMap.get(int(i))
+    pkg.assigned_truck = 'Truck 1'
+
+# load truck 2
+truck2.load([2, 3, 4, 5, 6, 7, 8, 18, 25, 28, 32, 36, 38], datetime.timedelta(hours=9, minutes=30))
+for i in truck2.packages_on_board:
+    pkg = packageHashMap.get(int(i))
+    pkg.assigned_truck = 'Truck 2'
+
+# update package 9 address at 10:20, before being loaded on truck 3
+new_pkg_9 = Package(9, '410 S State St', 'Salt Lake City', 'UT', '84111', 'EOD', '2', 'Address corrected')
+packageHashMap.add(9, new_pkg_9)
+
+# load truck 3
+truck3.load([9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39], datetime.timedelta(hours=10, minutes=30))
+for i in truck3.packages_on_board:
+    pkg = packageHashMap.get(int(i))
+    pkg.assigned_truck = 'Truck 3'
 
 
 def deliver_packages(truck):
@@ -115,13 +131,9 @@ def deliver_packages(truck):
     truck.time += datetime.timedelta(hours=dist_back_to_hub / truck.avg_speed)
 
 
-# dispatch trucks 1 and 2 first
+# dispatch trucks at scheduled departure times
 deliver_packages(truck1)
 deliver_packages(truck2)
-
-# truck3 leaves when truck1 or truck2 returns to hub
-truck3.departure_time = min(truck1.time, truck2.time)
-truck3.time = truck3.departure_time
 deliver_packages(truck3)
 
 
@@ -169,6 +181,14 @@ class UserInterface:
                         if 1 <= int(input_package) <= 40:
                             pkg = packageHashMap.get(int(input_package))
 
+                            # show old or corrected address for package 9
+                            if int(input_package) == 9:
+                                if time_to_check < datetime.timedelta(hours=10, minutes=20):
+                                    pkg.address = '300 State St'
+                                    pkg.zip = '84103'
+                                    pkg.notes = 'Wrong address listed'
+
+                            # compare report time to delivered time to determine status
                             if time_to_check >= pkg.deliveredTime:
                                 pkg.status = f"Delivered at {pkg.deliveredTime}"
                             elif time_to_check >= pkg.departure_time:
@@ -183,6 +203,13 @@ class UserInterface:
                     elif input_package == "all":
                         for i in range(1, 41):
                             pkg = packageHashMap.get(i)
+
+                            # show old or corrected address for package 9
+                            if i == 9 and time_to_check < datetime.timedelta(hours=10, minutes=20):
+                                pkg.address = '300 State St'
+                                pkg.zip = '84103'
+                                pkg.notes = 'Wrong address listed'
+
                             if time_to_check >= pkg.deliveredTime:
                                 pkg.status = f"Delivered at {pkg.deliveredTime}"
                             elif time_to_check >= pkg.departure_time:
